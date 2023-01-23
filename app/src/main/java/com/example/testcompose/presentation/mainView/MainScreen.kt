@@ -1,6 +1,7 @@
 package com.example.testcompose.presentation.mainView
 
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -9,6 +10,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -44,6 +46,7 @@ fun MainScreen() {
     val navController = rememberNavController()
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
+    val topBarState = rememberSaveable { (mutableStateOf(true)) }
 
     val isAppBarVisible = remember { mutableStateOf(true) }
     val searchProgressBar = remember { mutableStateOf(false) }
@@ -68,16 +71,18 @@ fun MainScreen() {
                     val appTitle: String =
                         if (currentRoute(navController) == Screen.NavigationDrawer.route) genreName.value
                         else stringResource(R.string.app_title)
-
-                    HomeAppBar(title = appTitle, openDrawer = {
-                        scope.launch {
-                            scaffoldState.drawerState.apply {
-                                if (isClosed) open() else close()
+                    AnimatedVisibility(visible = currentRoute(navController) != Screen.MovieDetail.route) {
+                        HomeAppBar(title = appTitle, openDrawer = {
+                            scope.launch {
+                                scaffoldState.drawerState.apply {
+                                    if (isClosed) open() else close()
+                                }
                             }
-                        }
-                    }, openFilters = {
-                        isAppBarVisible.value = false
-                    })
+                        }, openFilters = {
+                            isAppBarVisible.value = false
+                        })
+                    }
+
                 } else {
                     SearchBar(isAppBarVisible){
                         mainViewModel.handelActions(MainAction.ExecuteSearch(it))
@@ -85,8 +90,10 @@ fun MainScreen() {
                 }
             }
             else -> {
-                AppBarWithArrow(navigationTitle(navController)) {
-                    navController.popBackStack()
+                AnimatedVisibility(visible = currentRoute(navController) != Screen.MovieDetail.route) {
+                    AppBarWithArrow(navigationTitle(navController)) {
+                        navController.popBackStack()
+                    }
                 }
             }
         }

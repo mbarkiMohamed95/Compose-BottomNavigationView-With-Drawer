@@ -9,7 +9,11 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.material.Text
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.AccountBox
+import androidx.compose.material.icons.rounded.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -18,7 +22,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import com.example.testcompose.tools.pagingTool.items
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -84,18 +90,115 @@ fun HomeScreen(
 
 @Composable
 fun MovieItemView(item: MovieItem, navController: NavController) {
-    Column(modifier = Modifier.padding(5.dp)) {
-        Image(painter = rememberImagePainter(ApiURL.IMAGE_URL.plus(item.posterPath)),
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
+    Card(modifier = Modifier.padding(5.dp)) {
+        Box(modifier = Modifier.fillMaxSize()) {
+            Image(painter = rememberImagePainter(ApiURL.IMAGE_URL.plus(item.posterPath)),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(250.dp)
+                    .cornerRadius10()
+                    .clickable {
+                        navController.navigate(Screen.MovieDetail.route.plus("/${item.id}"))
+                    })
+           // TopBar()
+            BottomBar(item.title)
+        }
+    }
+
+}
+private const val BottomBarHeightFraction = 0.30f
+private const val TopBarHeightFraction = BottomBarHeightFraction / 2
+private val BarColor = Color(red = 0f, green = 0f, blue = 0f, alpha = 0.5f)
+
+
+@Composable
+ fun BoxScope.TopBar() {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight(TopBarHeightFraction/4)
+            .background(BarColor)
+            .align(Alignment.TopCenter)
+    ) {
+        Row(
             modifier = Modifier
-                .size(250.dp)
-                .cornerRadius10()
-                .clickable {
-                    navController.navigate(Screen.MovieDetail.route.plus("/${item.id}"))
-                })
+                .fillMaxHeight(0.75f)
+                .wrapContentWidth()
+                .align(Alignment.CenterStart),
+            horizontalArrangement = Arrangement.spacedBy(2.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(imageVector = Icons.Rounded.Star, contentDescription = null)
+            Icon(imageVector = Icons.Rounded.Star, contentDescription = null)
+            Icon(imageVector = Icons.Rounded.Star, contentDescription = null)
+        }
+
+        Row(
+            modifier = Modifier
+                .fillMaxHeight(0.75f)
+                .wrapContentWidth()
+                .align(Alignment.CenterEnd),
+            horizontalArrangement = Arrangement.spacedBy(2.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            IconButton(
+                onClick = {  },
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .aspectRatio(1f)
+                    .background(
+                        color = LocalContentColor.current.copy(alpha = 0.0f),
+                        shape = CircleShape
+                    )
+            ) {
+                Icon(
+                    imageVector = Icons.Rounded.Star,
+                    contentDescription = null
+                )
+            }
+            IconButton(
+                onClick = {  },
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .aspectRatio(1f)
+                    .background(
+                        color = LocalContentColor.current.copy(alpha = 0.0f),
+                        shape = CircleShape
+                    )
+            ) {
+                Icon(
+                    imageVector = Icons.Rounded.AccountBox,
+                    contentDescription = null
+                )
+            }
+        }
     }
 }
+
+@Composable
+fun BoxScope.BottomBar(text: String) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight(BottomBarHeightFraction)
+            .background(BarColor)
+            .padding(5.dp)
+            .align(Alignment.BottomCenter)
+    ) {
+        Text(
+            text = text,
+            color = Color.White,
+            textAlign = TextAlign.Center,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.Center)
+        )
+    }
+}
+
 
 
 
