@@ -26,9 +26,9 @@ fun HomeAppBar(title: String, openDrawer: () -> Unit, openFilters: () -> Unit) {
             }
         },
         actions = {
-//            IconButton(onClick = openFilters) {
-//                Icon(imageVector = Icons.Filled.Search, contentDescription = "Search")
-//            }
+            IconButton(onClick = openFilters) {
+               Icon(imageVector = Icons.Filled.Search, contentDescription = "Search")
+           }
         }
     )
 }

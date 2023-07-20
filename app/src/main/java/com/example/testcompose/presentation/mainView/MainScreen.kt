@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -62,7 +63,8 @@ fun MainScreen() {
 
     Scaffold(scaffoldState = scaffoldState, topBar = {
         when (currentRoute(navController)) {
-            Screen.HomeNav.route, Screen.PopularNav.route, Screen.TopRatedNav.route, Screen.UpcomingNav.route, Screen.NavigationDrawer.route -> {
+            Screen.HomeNav.route, Screen.PopularNav.route,
+            Screen.TopRatedNav.route, Screen.UpcomingNav.route, Screen.NavigationDrawer.route -> {
                 if (isAppBarVisible.value) {
 
                     val appTitle: String =
@@ -79,11 +81,16 @@ fun MainScreen() {
                         isAppBarVisible.value = false
                     })
                 } else {
-                    SearchBar(isAppBarVisible){
+                    SearchBar(isAppBarVisible) {
                         mainViewModel.handelActions(MainAction.ExecuteSearch(it))
                     }
                 }
             }
+
+            Screen.MovieDetail.route -> {
+                isAppBarVisible.value = false
+            }
+
             else -> {
                 AppBarWithArrow(navigationTitle(navController)) {
                     navController.popBackStack()
@@ -126,7 +133,7 @@ fun MainScreen() {
                 Text(text = stringResource(R.string.there_is_no_internet))
             }
         }
-    }){
+    }) {
         Box(
             modifier = Modifier.fillMaxWidth()
         ) {

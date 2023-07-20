@@ -87,4 +87,19 @@ dependencies {
 
     // multidex
     implementation "androidx.multidex:multidex:2.0.1"
+
+    implementation "androidx.compose.material3:material3:1.1.1"
+    implementation "androidx.compose.material3:material3-window-size-class:1.1.1"
+
+    constraints {
+        implementation("androidx.compose.material3:material3:1.1.1") {
+            because("kotlin-stdlib-jdk7 is now a part of kotlin-stdlib")
+        }
+        implementation("androidx.compose.material3:material3-window-size-class:1.1.1") {
+            because("kotlin-stdlib-jdk7 is now a part of kotlin-stdlib")
+        }
+        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.0") {
+            because("kotlin-stdlib-jdk8 is now a part of kotlin-stdlib")
+        }
+    }
 }

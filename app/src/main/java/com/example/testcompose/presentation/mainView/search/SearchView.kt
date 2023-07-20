@@ -16,6 +16,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -27,7 +28,6 @@ import com.example.testcompose.presentation.res.DefaultBackgroundColor
 import com.example.testcompose.presentation.res.SecondaryFontColor
 import com.example.testcompose.routing.Screen
 import com.example.testcompose.tools.DataState
-
 @Composable
 fun SearchUI(navController:NavController, searchData: State<DataState<BaseModel>?>, itemClick:()->Unit) {
     LazyColumn(

@@ -7,6 +7,7 @@ import androidx.compose.runtime.State
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import com.example.testcompose.tools.DataState
+import kotlin.time.Duration.Companion.minutes
 
 fun <T : Any> State<DataState<T>?>.pagingLoadingState(isLoaded: (pagingState: Boolean) -> Unit) {
     when (this.value) {
@@ -57,4 +58,8 @@ fun <T : Any> LazyPagingItems<T>.pagingLoadingState(
             }
         }
     }
+}
+
+fun Int.hourMinutes(): String {
+    return "${this.minutes.inWholeHours}h ${this % 60}m"
 }
